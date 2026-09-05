@@ -8,7 +8,7 @@
   [![LangGraph](https://img.shields.io/badge/LangGraph-0.2%2B-FF6B35?style=flat-square)](https://langchain-ai.github.io/langgraph/)
   [![Ollama](https://img.shields.io/badge/Ollama-local%20LLM-000000?style=flat-square)](https://ollama.com)
 
-  **[🏆 Top 3 — DataHack 2026](https://www.instagram.com/p/DXhaP5NDWqp/?img_index=1)**
+  **[🏆 Top 3 — DataHack 2026 ](https://www.instagram.com/p/DXhaP5NDWqp/?img_index=1)**
 
   *Herramienta de soporte a la investigación académica que automatiza la búsqueda bibliográfica, la construcción de matrices de análisis y la generación de hipótesis, ejecutándose de forma completamente local sin dependencias de servicios externos.*
 </div>
