@@ -1,44 +1,14 @@
 import json
-import os
-import threading
 
 from langchain_core.runnables import RunnableConfig
-from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, StateGraph
-from langgraph.types import Command, interrupt  # noqa: F401
+from langgraph.types import interrupt
 
-from app.state import MATRIX_TEMPLATES, ResearchState
-from app.tools import search_arxiv, search_scholar
-
-# ---------------------------------------------------------------------------
-# Matrix streaming registry  (session_id → (asyncio.Queue, event_loop))
-# ---------------------------------------------------------------------------
-_matrix_streams: dict = {}
-_stream_lock = threading.Lock()
-
-
-def _reg_stream(tid: str, q, loop) -> None:
-    with _stream_lock:
-        _matrix_streams[tid] = (q, loop)
-
-
-def _unreg_stream(tid: str) -> None:
-    with _stream_lock:
-        _matrix_streams.pop(tid, None)
-
-MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
-OLLAMA_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-
-
-def get_llm(temperature: float = 0.3):
-    return ChatOllama(
-        model=MODEL,
-        temperature=temperature,
-        num_predict=4096,
-        base_url=OLLAMA_URL,
-    )
-
+from src.agent.llm import get_llm
+from src.agent.state import MATRIX_TEMPLATES, ResearchState
+from src.agent.streaming import get_stream
+from src.agent.tools import search_arxiv, search_scholar
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -237,8 +207,7 @@ def node_generate_matrix(state: ResearchState, config: RunnableConfig = None):
     )
 
     tid = (config or {}).get("configurable", {}).get("thread_id", "") if config else ""
-    with _stream_lock:
-        stream_info = _matrix_streams.get(tid)
+    stream_info = get_stream(tid)
 
     full_content = ""
     if stream_info:
@@ -260,12 +229,7 @@ def node_generate_matrix(state: ResearchState, config: RunnableConfig = None):
 
 def node_generate_hypotheses(state: ResearchState):
     try:
-        llm = ChatOllama(
-            model=MODEL,
-            temperature=0.5,
-            num_predict=1024,
-            base_url=OLLAMA_URL,
-        )
+        llm = get_llm(temperature=0.5, num_predict=1024)
         papers_json = json.dumps([{
             "title": p.get("title", ""),
             "abstract": p.get("abstract", "")[:300],

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Entornos virtuales (uv)
+.venv/
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Herramientas
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editores / SO
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Exportaciones generadas
+*.xlsx
+*.docx

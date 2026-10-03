@@ -1,6 +1,6 @@
 import re as _re
-import arxiv
 
+import arxiv
 
 _ACCENT_MAP = str.maketrans(
     'áàâäéèêëíìîïóòôöúùûüñçýÁÀÂÄÉÈÊËÍÌÎÏÓÒÔÖÚÙÛÜÑÇÝ',
