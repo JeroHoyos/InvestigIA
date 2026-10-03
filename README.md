@@ -21,12 +21,4 @@ Para desarrollo: `uv run python -m src --reload`.
 
 El modelo y la URL de Ollama se pueden cambiar copiando `.env.example` a `.env`.
 
-## Estructura
 
-```
-src/
-  agent/    grafo LangGraph, prompts, búsqueda en ArXiv/Scholar
-  api/      endpoints FastAPI y WebSocket
-  export/   generación de Excel y Word
-  static/   frontend (HTML, CSS, JS)
-```
